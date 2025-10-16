@@ -117,7 +117,6 @@
             background-size: cover;
             background-position: center;
             border-bottom: 3px solid #4a2c16;
-            background-image: url('{{ url_for('static', filename='placeholder.jpg') }}'); /* Placeholder */
         }
         .product-info {
             padding: 15px;
@@ -159,7 +158,7 @@
             <a href="#">ហាង (Stores)</a>
             <a href="#">ព្រឹត្តិការណ៍ (Events)</a>
             <a href="#">ទំនាក់ទំនង (Contact)</a>
-            <a class="admin-link" href="/admin">ផ្ទាំងគ្រប់គ្រង</a>
+            <a class="admin-link" href="{{ url_for('productjson.index_view') }}">ផ្ទាំងគ្រប់គ្រង</a>
         </nav>
     </header>
 
