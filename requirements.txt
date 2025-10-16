@@ -1,4 +1,9 @@
 Flask
-Flask-SQLAlchemy
 Flask-Admin
 gunicorn
+# gunicorn is needed if you plan to deploy to platforms like Vercel or Heroku
+
+# WTForms is implicitly required by Flask-Admin for forms and validation
+# You don't need to explicitly list WTForms unless you use it outside of Flask-Admin, 
+# but including it ensures dependencies are clear.
+WTForms
