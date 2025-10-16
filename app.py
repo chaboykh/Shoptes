@@ -1,81 +1,148 @@
 import os
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
+import json
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_admin import Admin, BaseView, expose
+from flask_admin.form import BaseForm
+from wtforms import StringField, FloatField, TextAreaField, HiddenField, validators
 from jinja2 import Markup
 
-# --- Vercel Note on Database ---
-# Vercel's serverless environment doesn't allow SQLite (panhamall.db) 
-# for production because it's non-persistent. For a REAL deployment, 
-# you MUST switch to a hosted database like PostgreSQL (e.g., Vercel Postgres, Supabase).
-# For this demonstration, we'll keep the SQLite configuration, 
-# but note that data persistence will be unreliable on Vercel.
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-
+# --- Configuration & Setup ---
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'panha_mall_super_secret_key_12345'
-# Vercel will look for this file, but writes will be unreliable/lost.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join('/tmp', 'panhamall.db') 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['FLASK_ADMIN_SWATCH'] = 'flatly' 
+app.config['SECRET_KEY'] = 'panha_mall_json_db_secure_key_456'
+app.config['FLASK_ADMIN_SWATCH'] = 'flatly'
 
-db = SQLAlchemy(app)
-admin = Admin(app, name=Markup('ផ្សារទំនើបបញ្ញា <span style="font-size: 0.8em;">(Admin)</span>'), template_mode='bootstrap3')
+# Define the JSON file path
+JSON_DB_PATH = 'products_db.json'
+admin = Admin(app, name=Markup('ផ្សារទំនើបបញ្ញា (Admin)'), template_mode='bootstrap3')
 
+# --- JSON Database Functions ---
 
-# --- Database Model: Product (ទំនិញ) ---
-class Product(db.Model):
-    # Model definition remains the same
-    id = db.Column(db.Integer, primary_key=True)
-    name_kh = db.Column(db.String(100), nullable=False)
-    name_en = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    description_kh = db.Column(db.Text, nullable=True) 
-    store = db.Column(db.String(100), nullable=True) 
-    image_url = db.Column(db.String(255), nullable=True) 
+def load_products():
+    """Reads all product data from the JSON file."""
+    if not os.path.exists(JSON_DB_PATH):
+        return []
+    with open(JSON_DB_PATH, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
-    def __repr__(self):
-        return f'<Product {self.name_kh}>'
+def save_products(products):
+    """Writes the entire list of products back to the JSON file."""
+    with open(JSON_DB_PATH, 'w', encoding='utf-8') as f:
+        json.dump(products, f, indent=4, ensure_ascii=False)
 
-# --- Flask-Admin Custom View for Product ---
-class ProductAdminView(ModelView):
-    # ... (Admin view config remains the same)
-    column_labels = dict(
-        name_kh=Markup('ឈ្មោះ (ខ្មែរ)'),
-        name_en='Name (English)',
-        price=Markup('តម្លៃ (Price)'),
-        description_kh=Markup('ការពិពណ៌នា (Khmer)'),
-        store=Markup('ហាង (Store)'),
-        image_url='Image URL'
-    )
-    column_list = ('name_kh', 'price', 'store', 'image_url')
-    form_columns = ('name_kh', 'name_en', 'price', 'store', 'description_kh', 'image_url')
+def get_next_id(products):
+    """Calculates the next available product ID."""
+    return max([p['id'] for p in products] + [0]) + 1
 
-    def get_url(self, endpoint, **kwargs):
-        if endpoint == 'product.index_view':
-            self.name = 'ទំនិញ (Products)'
-        return super().get_url(endpoint, **kwargs)
+# --- WTForms for Product Input ---
 
-admin.add_view(ProductAdminView(Product, db.session, name='ទំនិញ'))
+class ProductForm(BaseForm):
+    """Form used for creating and editing products in the Admin."""
+    id = HiddenField() # Used for editing existing products
+    name_kh = StringField(Markup('ឈ្មោះ (ខ្មែរ)'), [validators.DataRequired()], render_kw={"placeholder": "ឧទាហរណ៍: អាវយឺត"})
+    name_en = StringField('Name (English)', [validators.DataRequired()], render_kw={"placeholder": "Example: T-Shirt"})
+    price = FloatField(Markup('តម្លៃ (Price)'), [validators.DataRequired()], render_kw={"placeholder": "Example: 15.50"})
+    description_kh = TextAreaField(Markup('ការពិពណ៌នា (Khmer)'), render_kw={"rows": 3})
+    store = StringField(Markup('ហាង (Store)'), render_kw={"placeholder": "ឧទាហរណ៍: ហាងសម្លៀកបំពាក់ A"})
+    image_url = StringField('Image URL', render_kw={"placeholder": "https://example.com/image.jpg"})
 
+# --- Custom Admin View for JSON Data ---
 
-# --- Vercel Initialization Step: Create tables on first request ---
-# We use app.before_first_request to ensure the tables exist 
-# when a request hits the serverless function.
-@app.before_first_request
-def create_tables():
-    db.create_all()
+class ProductJsonView(BaseView):
+    """Custom view for managing products using the JSON file."""
+    
+    @expose('/')
+    def index_view(self):
+        """Displays the list of products."""
+        products = load_products()
+        return self.render('admin_list.html', products=products)
 
+    @expose('/new', methods=('GET', 'POST'))
+    def create_view(self):
+        """Handles creating a new product."""
+        form = ProductForm(request.form)
+        if request.method == 'POST' and form.validate():
+            products = load_products()
+            new_product = {
+                'id': get_next_id(products),
+                'name_kh': form.name_kh.data,
+                'name_en': form.name_en.data,
+                'price': form.price.data,
+                'description_kh': form.description_kh.data,
+                'store': form.store.data,
+                'image_url': form.image_url.data
+            }
+            products.append(new_product)
+            save_products(products)
+            flash(Markup(f'ទំនិញ "{new_product["name_kh"]}" ត្រូវបានបញ្ចូលដោយជោគជ័យ។'), 'success')
+            return redirect(url_for('productjson.index_view'))
+        
+        return self.render('admin_edit.html', form=form, action='create')
 
-# --- Main Application Routes and Templates ---
+    @expose('/edit/<int:product_id>', methods=('GET', 'POST'))
+    def edit_view(self, product_id):
+        """Handles editing an existing product."""
+        products = load_products()
+        product = next((p for p in products if p['id'] == product_id), None)
+
+        if not product:
+            flash(Markup('រកមិនឃើញទំនិញនេះទេ។'), 'error')
+            return redirect(url_for('productjson.index_view'))
+
+        form = ProductForm(request.form, **product) 
+        
+        if request.method == 'POST' and form.validate():
+            # Find and update the product in the list
+            product.update({
+                'name_kh': form.name_kh.data,
+                'name_en': form.name_en.data,
+                'price': form.price.data,
+                'description_kh': form.description_kh.data,
+                'store': form.store.data,
+                'image_url': form.image_url.data
+            })
+            save_products(products)
+            flash(Markup(f'ទំនិញ "{product["name_kh"]}" ត្រូវបានកែប្រែដោយជោគជ័យ។'), 'success')
+            return redirect(url_for('productjson.index_view'))
+
+        return self.render('admin_edit.html', form=form, action='edit', product_id=product_id)
+
+    @expose('/delete/<int:product_id>', methods=('POST',))
+    def delete_view(self, product_id):
+        """Handles deleting a product."""
+        products = load_products()
+        initial_length = len(products)
+        # Filter out the product to be deleted
+        products[:] = [p for p in products if p['id'] != product_id]
+        
+        if len(products) < initial_length:
+            save_products(products)
+            flash(Markup('ទំនិញត្រូវបានលុបដោយជោគជ័យ។'), 'success')
+        else:
+            flash(Markup('រកមិនឃើញទំនិញដើម្បីលុបទេ។'), 'error')
+
+        return redirect(url_for('productjson.index_view'))
+
+# Add the custom view to the Admin interface
+admin.add_view(ProductJsonView(name=Markup('ទំនិញ (Products)'), endpoint='productjson'))
+
+# --- Frontend Route ---
+
 @app.route('/')
 def index():
-    products = Product.query.all()
+    products = load_products() # Load data directly from JSON
+    # Note: We pass the list of dictionaries directly to the template
     return render_template('index.html', products=products)
 
+# --- Execution ---
 
-# --- Execution for Vercel (IMPORTANT) ---
-# Vercel and Gunicorn look for the 'app' variable, NOT the 'if __name__ == "__main__":' block.
-# We've removed the local-only 'flask initdb' command and execution block.
+if __name__ == '__main__':
+    # Ensure the JSON file exists on first run
+    if not os.path.exists(JSON_DB_PATH):
+        save_products([])
+        print(f"Created empty JSON database file at: {JSON_DB_PATH}")
+    
+    print("\n--- JSON-Based PANHA MALL SERVER ---")
+    print("Frontend: http://127.0.0.1:5000/")
+    print("Admin Panel: http://127.0.0.1:5000/admin")
+    print("------------------------------------\n")
+    app.run(debug=True)
