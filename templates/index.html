@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ផ្សារទំនើបបញ្ញា | PANHA MALL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer&display=swap" rel="stylesheet">
+    
+    <style>
+        /* BASE STYLE: Khmer Inspired */
+        body {
+            font-family: 'Khmer', 'Khmer UI', sans-serif;
+            background-color: #f7f3e8; /* Light, laterite-like background */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* HEADER (Gopura/Entrance) */
+        header {
+            background-color: #4a2c16; /* Deep brown/stone */
+            color: #ffd700; /* Gold */
+            padding: 15px 5%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+        nav a {
+            color: #ffd700;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 1.1em;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            color: white;
+            border-bottom: 2px solid #ffd700; /* Gold Kbach-like underline */
+        }
+        .admin-link {
+            color: #f7f3e8;
+            margin-left: 25px;
+            text-decoration: none;
+            border: 1px solid #ffd700;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .admin-link:hover {
+            background-color: #ffd700;
+            color: #4a2c16;
+        }
+
+        /* MAIN CONTENT AREA: Gallery/Enclosure */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .section-title {
+            text-align: center;
+            color: #4a2c16;
+            font-size: 2.2em;
+            margin-bottom: 40px;
+            display: block;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #ffd700; /* Gold separation/kbach line */
+        }
+
+        /* PRODUCT GRID: Bas-Relief inspired arrangement */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .product-image-placeholder {
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid #4a2c16;
+            background-image: url('{{ url_for('static', filename='placeholder.jpg') }}'); /* Placeholder */
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-info h3 {
+            color: #4a2c16;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.5em;
+        }
+        .product-info p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        .price {
+            font-weight: bold;
+            color: #c00; /* Red for emphasis */
+            font-size: 1.3em;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #333;
+            color: #f7f3e8;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ផ្សារទំនើបបញ្ញា</h1>
+        </div>
+        <nav>
+            <a href="#">ទំព័រដើម (Home)</a>
+            <a href="#">ហាង (Stores)</a>
+            <a href="#">ព្រឹត្តិការណ៍ (Events)</a>
+            <a href="#">ទំនាក់ទំនង (Contact)</a>
+            <a class="admin-link" href="/admin">ផ្ទាំងគ្រប់គ្រង</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2 class="section-title">ទំនិញថ្មីៗប្រចាំខែ (Featured Products of the Month)</h2>
+            
+            {% if products %}
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image-placeholder" 
+                        style="background-image: url('{{ product.image_url if product.image_url and product.image_url != 'None' else url_for('static', filename='placeholder.jpg') }}');">
+                        
+                        {% if not product.image_url or product.image_url == 'None' %}
+                            [ រូបភាពទំនិញ ]
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <h3>{{ product.name_kh }}</h3>
+                        <p>({{ product.name_en }})</p>
+                        <p class="price">តម្លៃ: ${{ product.price | round(2) }}</p>
+                        <p><strong>ហាង:</strong> {{ product.store }}</p>
+                        <p>{{ product.description_kh }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p style="text-align: center; font-size: 1.2em; padding: 50px;">
+                មិនទាន់មានទំនិញណាមួយត្រូវបានបន្ថែមនៅឡើយទេ។ សូមប្រើផ្ទាំងគ្រប់គ្រងដើម្បីបន្ថែម។
+                <br>(No products have been added yet. Please use the admin panel to add some.)
+            </p>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 ផ្សារទំនើបបញ្ញា (PANHA MALL). រក្សាសិទ្ធិគ្រប់យ៉ាង។
+    </footer>
+</body>
+</html>
