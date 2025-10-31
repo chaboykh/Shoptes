@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launching Soon - Premium Service</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons (though not used, kept for theme consistency) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#101215', /* Very dark background */
+                        'primary': '#3390ec', /* Telegram Blue/Accent */
+                        'secondary-text': '#8b8e92',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* No specific styles needed after removing form/contact sections */
+    </style>
+</head>
+<body class="bg-dark-bg min-h-screen text-white font-sans flex items-center justify-center p-4">
+
+    <div class="max-w-3xl w-full text-center space-y-12">
+        
+        <!-- Header / Logo -->
+        <header>
+            <h1 class="text-5xl md:text-7xl font-display font-extrabold tracking-tight">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-300">
+                    Premium Service
+                </span>
+            </h1>
+            <p class="text-xl text-secondary-text mt-2">The next level in gaming services is almost here.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="space-y-8 mt-24">
+            
+            <!-- Coming Soon Message -->
+            <div class="p-8 rounded-2xl bg-dark-bg/50 border-4 border-primary/50 shadow-xl">
+                <h2 class="text-4xl md:text-6xl font-bold text-gray-100">
+                    WE ARE <span class="text-primary">COMING SOON</span>
+                </h2>
+                <p class="text-2xl text-secondary-text mt-4">
+                    Thank you for your patience. Prepare for launch!
+                </p>
+            </div>
+            
+        </main>
+        
+        <!-- Placeholder Footer (Minimal) -->
+        <div class="pt-12 mt-12">
+            <p class="text-xs text-secondary-text">&copy; 2024 Premium Hub. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript to initialize icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
