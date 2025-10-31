@@ -56,17 +56,31 @@
             display: none; /* Chrome, Safari, Opera */
         }
 
-        .card-button {
+        /* Apply card-button styles to anchor tags now */
+        .card-link {
             transition: transform 0.1s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* Inherit button styling properties */
+            background-color: var(--tw-colors-tg-card-bg);
+            padding: 1rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2); /* shadow-premium */
+            border: 1px solid var(--tw-colors-tg-border);
+            width: 100%;
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit text color */
         }
-        .card-button:hover {
+        .card-link:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
             border-color: var(--tw-colors-tg-accent);
         }
-        .card-button:active {
+        .card-link:active {
             transform: scale(0.98);
-            box-shadow: var(--tw-shadow-card-hover);
+            box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.5);
         }
         
         .header-gradient {
@@ -105,10 +119,10 @@
             <h1 class="text-2xl font-heading font-bold text-tg-accent flex items-center">
                 <i data-lucide="rocket" class="w-7 h-7 mr-2 animate-bounce-slow"></i>
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-tg-accent to-blue-300">
-                    PN Premium
+                    Premium Hub
                 </span>
             </h1>
-            <button onclick="navigatePage('settings.html', 'Settings')"
+            <button onclick="showMessage('Settings panel coming soon!')"
                 class="text-tg-text-secondary hover:text-tg-accent p-2 rounded-full transition duration-200">
                 <i data-lucide="settings" class="w-6 h-6"></i>
             </button>
@@ -121,8 +135,9 @@
         <main class="p-4 space-y-6">
 
             <!-- BANNER 1: Large Promotional Banner -->
-            <a href="diamond_offer.html" onclick="event.preventDefault(); navigatePage('diamond_offer.html', 'Diamond Offer')"
-               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out">
+            <a href="diamond_offer.html" target="_blank"
+               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out"
+               onclick="showMessage('Opening Diamond Offer page...')">
                 <img class="banner-img" 
                      src="https://img.js.design/assets/img/646a782a2015f2284c8d50b7.png#92728956b7df945c7e0f2f31b8364653" 
                      alt="Premium Diamond Topup Sale"
@@ -136,57 +151,50 @@
             <div class="grid grid-cols-2 gap-4">
 
                 <!-- App Card: Mobile Legends: Bang Bang (MLBB) -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('mlbb.html', 'MLBB Top-up')">
-                    <!-- NEW MLBB LOGO URL -->
+                <a href="mlbb.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening MLBB Top-up...')">
                     <img class="game-logo" 
                          src="https://www.lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2F20250613_234726_3213759a7d.png&w=750&q=75" 
                          alt="MLBB Logo" 
                          onerror="this.onerror=null;this.src='https://placehold.co/48x48/8B0000/ffffff?text=ML';">
                     <p class="font-bold text-tg-text-light text-base">MLBB Top-up</p>
                     <p class="text-xs text-tg-text-secondary">Mobile Legends</p>
-                </button>
+                </a>
 
                 <!-- App Card: Free Fire (FF) -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('ff.html', 'Free Fire Top-up')">
-                    <!-- NEW FF LOGO URL -->
+                <a href="ff.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening Free Fire Top-up...')">
                     <img class="game-logo" 
                          src="https://lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2Ffree_fire_logo_7af9b46fab.webp&w=750&q=75" 
                          alt="Free Fire Logo" 
                          onerror="this.onerror=null;this.src='https://placehold.co/48x48/FFA500/ffffff?text=FF';">
                     <p class="font-bold text-tg-text-light text-base">FF Top-up</p>
                     <p class="text-xs text-tg-text-secondary">Garena Free Fire</p>
-                </button>
+                </a>
 
                 <!-- App Card: Roblox -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('roblox.html', 'Roblox Store')">
-                    <!-- NEW ROBLOX LOGO URL -->
+                <a href="roblox.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening Roblox Store...')">
                     <img class="game-logo" 
                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXIDtd9-xhXkZYGW9gBcbZGf5bVvVerEDH6qTi0O93_A&s=10" 
                          alt="Roblox Logo" 
                          onerror="this.onerror=null;this.src='https://placehold.co/48x48/00BFFF/ffffff?text=RBX';">
                     <p class="font-bold text-tg-text-light text-base">Roblox</p>
                     <p class="text-xs text-tg-text-secondary">Buy Robux and passes</p>
-                </button>
+                </a>
 
                 <!-- App Card: Honor of Kings (HOK) -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('hok.html', 'Honor of Kings Store')">
-                    <!-- NEW HOK LOGO URL -->
+                <a href="hok.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening HOK Store...')">
                     <img class="game-logo" 
                          src="https://lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2FImg_Resizer_20240802_0037_15641_b691ea1729.webp&w=750&q=75" 
                          alt="Honor of Kings Logo" 
                          onerror="this.onerror=null;this.src='https://placehold.co/48x48/800080/ffffff?text=HOK';">
                     <p class="font-bold text-tg-text-light text-base">HOK Store</p>
                     <p class="text-xs text-tg-text-secondary">Honor of Kings services</p>
-                </button>
+                </a>
             </div>
 
             <!-- BANNER 2: Small Informational Banner -->
-            <a href="hosting_promo.html" onclick="event.preventDefault(); navigatePage('hosting_promo.html', 'Hosting Promotion')"
-               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out">
+            <a href="hosting_promo.html" target="_blank"
+               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out"
+               onclick="showMessage('Opening Hosting Promotion...')">
                 <img class="banner-img banner-img-small" 
                      src="https://img.js.design/assets/img/6429f4b93fb25a1f6a1a1f59.png#18a4574e9e0331008083a2168910874c" 
                      alt="Hosting and SMM Promotion"
@@ -199,36 +207,32 @@
             </h2>
             <div class="grid grid-cols-2 gap-4">
                  <!-- Service Card: Top-up Diamonds (Generic) -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('topup_diamonds.html', 'Top-up Diamonds')">
+                <a href="topup_diamonds.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening generic Top-up...')">
                     <i data-lucide="gem" class="w-12 h-12 text-service-diamonds"></i>
                     <p class="font-bold text-tg-text-light text-base">Top-up Diamonds</p>
                     <p class="text-xs text-tg-text-secondary">Any game, fast delivery</p>
-                </button>
+                </a>
 
                 <!-- Service Card: SMM -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('smm.html', 'SMM Panel')">
+                <a href="smm.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening SMM Panel...')">
                     <i data-lucide="megaphone" class="w-12 h-12 text-service-smm"></i>
                     <p class="font-bold text-tg-text-light text-base">SMM Services</p>
                     <p class="text-xs text-tg-text-secondary">Social Media Marketing</p>
-                </button>
+                </a>
 
                 <!-- Service Card: Hosting -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('2.html', 'Hosting Solutions')">
+                <a href="2.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening Hosting Solutions (2.html)...')">
                     <i data-lucide="server" class="w-12 h-12 text-service-hosting"></i>
                     <p class="font-bold text-tg-text-light text-base">Hosting</p>
                     <p class="text-xs text-tg-text-secondary">Web & Game Servers</p>
-                </button>
+                </a>
 
                 <!-- Service Card: Shopping -->
-                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
-                    onclick="navigatePage('shopping.html', 'Premium Shopping')">
+                <a href="shopping.html" target="_blank" class="card-link space-y-2" onclick="showMessage('Opening Shopping Marketplace...')">
                     <i data-lucide="shopping-cart" class="w-12 h-12 text-service-shopping"></i>
                     <p class="font-bold text-tg-text-light text-base">Shopping</p>
                     <p class="text-xs text-tg-text-secondary">Online Marketplace</p>
-                </button>
+                </a>
             </div>
             
             <!-- Footer Link -->
@@ -266,17 +270,6 @@
                 messageBox.classList.remove('opacity-100', 'translate-y-0');
                 messageBox.classList.add('opacity-0', 'translate-y-[-200%]');
             }, 3000); // Message disappears after 3 seconds
-        }
-
-        /**
-         * Simulates navigation to a new page, showing a message.
-         * @param {string} pageUrl - The URL of the page to "navigate" to.
-         * @param {string} pageName - The friendly name of the page.
-         */
-        function navigatePage(pageUrl, pageName) {
-            showMessage(`Simulating navigation to "${pageName}"...`);
-            // In a real TWA, you would use Telegram.WebApp.openLink(pageUrl) or change the internal view state.
-            console.log(`Simulated navigation to: ${pageUrl}`);
         }
 
         // Simple animation for the rocket icon in the header
