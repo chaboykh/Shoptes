@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Services & Games Hub</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic use -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Load Montserrat and Inter fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Configure Tailwind for a custom Telegram-like color palette and premium styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tg-dark-bg': '#181a1d', /* Even darker background */
+                        'tg-card-bg': '#202226', /* Slightly lighter card background */
+                        'tg-accent': '#3390ec',
+                        'tg-text-light': '#e0e0e0', /* Lighter text */
+                        'tg-text-secondary': '#8b8e92', /* Darker secondary text */
+                        'tg-border': '#3a3d42', /* Subtle border color */
+                        
+                        'game-mlbb': '#8B0000', /* Dark Red */
+                        'game-ff': '#FFA500', /* Orange */
+                        'game-roblox': '#00BFFF', /* Deep Sky Blue */
+                        'game-hok': '#800080', /* Purple */
+
+                        'service-diamonds': '#00CED1', /* Dark Turquoise */
+                        'service-smm': '#FF1493', /* Deep Pink */
+                        'service-hosting': '#32CD32', /* Lime Green */
+                        'service-shopping': '#FFD700', /* Gold */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'premium': '0 8px 16px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.2)',
+                        'card-hover': '0 0 0 2px rgba(51, 144, 236, 0.5)', /* Accent glow on hover/press */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .card-button {
+            transition: transform 0.1s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+        }
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: var(--tw-colors-tg-accent);
+        }
+        .card-button:active {
+            transform: scale(0.98);
+            box-shadow: var(--tw-shadow-card-hover);
+        }
+        
+        .header-gradient {
+            background: linear-gradient(90deg, #181a1d 0%, #202226 100%);
+            border-bottom: 1px solid #3a3d42;
+        }
+
+        .game-logo {
+            width: 48px; /* Standard size for logos */
+            height: 48px;
+            object-fit: contain; /* Ensure the whole logo is visible */
+            border-radius: 8px; /* Slightly rounded corners for logos */
+            background-color: #3a3d42; /* Fallback background for logos */
+            padding: 4px; /* Internal padding for logos */
+        }
+
+        .banner-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 16 / 5; 
+            border-radius: 12px;
+        }
+        .banner-img-small {
+            aspect-ratio: 16 / 4;
+        }
+    </style>
+</head>
+<body class="bg-tg-dark-bg min-h-screen text-tg-text-light font-sans">
+
+    <!-- Main Application Container -->
+    <div id="app" class="max-w-xl mx-auto pb-8">
+
+        <!-- Fixed Header (Simulating Telegram Interface) -->
+        <header class="sticky top-0 header-gradient p-4 flex items-center justify-between z-10 rounded-b-xl shadow-premium">
+            <h1 class="text-2xl font-heading font-bold text-tg-accent flex items-center">
+                <i data-lucide="rocket" class="w-7 h-7 mr-2 animate-bounce-slow"></i>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-tg-accent to-blue-300">
+                    PN Premium
+                </span>
+            </h1>
+            <button onclick="navigatePage('settings.html', 'Settings')"
+                class="text-tg-text-secondary hover:text-tg-accent p-2 rounded-full transition duration-200">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Notification/Message Container -->
+        <div id="message-box" class="fixed top-16 left-1/2 -translate-x-1/2 w-11/12 max-w-sm p-3 text-center text-sm transition-all duration-300 transform rounded-lg opacity-0 translate-y-[-200%] z-50 shadow-xl"></div>
+
+        <!-- Main Content Area -->
+        <main class="p-4 space-y-6">
+
+            <!-- BANNER 1: Large Promotional Banner -->
+            <a href="diamond_offer.html" onclick="event.preventDefault(); navigatePage('diamond_offer.html', 'Diamond Offer')"
+               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out">
+                <img class="banner-img" 
+                     src="https://img.js.design/assets/img/646a782a2015f2284c8d50b7.png#92728956b7df945c7e0f2f31b8364653" 
+                     alt="Premium Diamond Topup Sale"
+                     onerror="this.onerror=null; this.src='https://placehold.co/800x250/3390ec/ffffff?text=PREMIUM+SALE';">
+            </a>
+
+            <!-- Mini App Category: Top Games -->
+            <h2 class="text-xl font-heading font-semibold text-tg-text-light pt-2 pb-2 border-b border-tg-border">
+                🎮 Popular Games
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+
+                <!-- App Card: Mobile Legends: Bang Bang (MLBB) -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('mlbb.html', 'MLBB Top-up')">
+                    <!-- NEW MLBB LOGO URL -->
+                    <img class="game-logo" 
+                         src="https://www.lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2F20250613_234726_3213759a7d.png&w=750&q=75" 
+                         alt="MLBB Logo" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/48x48/8B0000/ffffff?text=ML';">
+                    <p class="font-bold text-tg-text-light text-base">MLBB Top-up</p>
+                    <p class="text-xs text-tg-text-secondary">Mobile Legends</p>
+                </button>
+
+                <!-- App Card: Free Fire (FF) -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('ff.html', 'Free Fire Top-up')">
+                    <!-- NEW FF LOGO URL -->
+                    <img class="game-logo" 
+                         src="https://lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2Ffree_fire_logo_7af9b46fab.webp&w=750&q=75" 
+                         alt="Free Fire Logo" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/48x48/FFA500/ffffff?text=FF';">
+                    <p class="font-bold text-tg-text-light text-base">FF Top-up</p>
+                    <p class="text-xs text-tg-text-secondary">Garena Free Fire</p>
+                </button>
+
+                <!-- App Card: Roblox -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('roblox.html', 'Roblox Store')">
+                    <!-- NEW ROBLOX LOGO URL -->
+                    <img class="game-logo" 
+                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXIDtd9-xhXkZYGW9gBcbZGf5bVvVerEDH6qTi0O93_A&s=10" 
+                         alt="Roblox Logo" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/48x48/00BFFF/ffffff?text=RBX';">
+                    <p class="font-bold text-tg-text-light text-base">Roblox</p>
+                    <p class="text-xs text-tg-text-secondary">Buy Robux and passes</p>
+                </button>
+
+                <!-- App Card: Honor of Kings (HOK) -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('hok.html', 'Honor of Kings Store')">
+                    <!-- NEW HOK LOGO URL -->
+                    <img class="game-logo" 
+                         src="https://lisatopup.com/_next/image?url=https%3A%2F%2Flisa-cms.minttopup.xyz%2Fuploads%2FImg_Resizer_20240802_0037_15641_b691ea1729.webp&w=750&q=75" 
+                         alt="Honor of Kings Logo" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/48x48/800080/ffffff?text=HOK';">
+                    <p class="font-bold text-tg-text-light text-base">HOK Store</p>
+                    <p class="text-xs text-tg-text-secondary">Honor of Kings services</p>
+                </button>
+            </div>
+
+            <!-- BANNER 2: Small Informational Banner -->
+            <a href="hosting_promo.html" onclick="event.preventDefault(); navigatePage('hosting_promo.html', 'Hosting Promotion')"
+               class="block rounded-xl overflow-hidden shadow-premium cursor-pointer hover:scale-[1.01] transition duration-200 ease-out">
+                <img class="banner-img banner-img-small" 
+                     src="https://img.js.design/assets/img/6429f4b93fb25a1f6a1a1f59.png#18a4574e9e0331008083a2168910874c" 
+                     alt="Hosting and SMM Promotion"
+                     onerror="this.onerror=null; this.src='https://placehold.co/800x120/32CD32/1e2125?text=SERVICES+PROMO';">
+            </a>
+
+            <!-- Mini App Category: E-Commerce & Services -->
+            <h2 class="text-xl font-heading font-semibold text-tg-text-light pt-2 pb-2 border-b border-tg-border">
+                💡 Premium Services
+            </h2>
+            <div class="grid grid-cols-2 gap-4">
+                 <!-- Service Card: Top-up Diamonds (Generic) -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('topup_diamonds.html', 'Top-up Diamonds')">
+                    <i data-lucide="gem" class="w-12 h-12 text-service-diamonds"></i>
+                    <p class="font-bold text-tg-text-light text-base">Top-up Diamonds</p>
+                    <p class="text-xs text-tg-text-secondary">Any game, fast delivery</p>
+                </button>
+
+                <!-- Service Card: SMM -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('smm.html', 'SMM Panel')">
+                    <i data-lucide="megaphone" class="w-12 h-12 text-service-smm"></i>
+                    <p class="font-bold text-tg-text-light text-base">SMM Services</p>
+                    <p class="text-xs text-tg-text-secondary">Social Media Marketing</p>
+                </button>
+
+                <!-- Service Card: Hosting -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('hosting.html', 'Hosting Solutions')">
+                    <i data-lucide="server" class="w-12 h-12 text-service-hosting"></i>
+                    <p class="font-bold text-tg-text-light text-base">Hosting</p>
+                    <p class="text-xs text-tg-text-secondary">Web & Game Servers</p>
+                </button>
+
+                <!-- Service Card: Shopping -->
+                <button class="card-button bg-tg-card-bg p-4 rounded-xl shadow-premium border border-tg-border flex flex-col items-center space-y-2 w-full text-center"
+                    onclick="navigatePage('shopping.html', 'Premium Shopping')">
+                    <i data-lucide="shopping-cart" class="w-12 h-12 text-service-shopping"></i>
+                    <p class="font-bold text-tg-text-light text-base">Shopping</p>
+                    <p class="text-xs text-tg-text-secondary">Online Marketplace</p>
+                </button>
+            </div>
+            
+            <!-- Footer Link -->
+            <div class="pt-8 text-center">
+                <a href="https://core.telegram.org/bots/webapps" target="_blank"
+                   class="inline-flex items-center text-sm font-medium text-tg-text-secondary hover:text-tg-accent transition duration-200">
+                    <i data-lucide="code" class="w-4 h-4 mr-1"></i>
+                    About Telegram Web Apps
+                </a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript for Icon Replacement and Interaction Logic -->
+    <script>
+        // Replace all Lucide icons with SVG elements
+        lucide.createIcons();
+
+        const messageBox = document.getElementById('message-box');
+        let messageTimeout;
+
+        /**
+         * Displays a temporary notification message at the top of the screen.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message) {
+            clearTimeout(messageTimeout);
+
+            messageBox.textContent = message;
+            messageBox.classList.remove('opacity-0', 'translate-y-[-200%]');
+            messageBox.classList.add('bg-tg-accent', 'text-white', 'opacity-100', 'translate-y-0');
+
+            messageTimeout = setTimeout(() => {
+                messageBox.classList.remove('opacity-100', 'translate-y-0');
+                messageBox.classList.add('opacity-0', 'translate-y-[-200%]');
+            }, 3000); // Message disappears after 3 seconds
+        }
+
+        /**
+         * Simulates navigation to a new page, showing a message.
+         * @param {string} pageUrl - The URL of the page to "navigate" to.
+         * @param {string} pageName - The friendly name of the page.
+         */
+        function navigatePage(pageUrl, pageName) {
+            showMessage(`Simulating navigation to "${pageName}"...`);
+            // In a real TWA, you would use Telegram.WebApp.openLink(pageUrl) or change the internal view state.
+            console.log(`Simulated navigation to: ${pageUrl}`);
+        }
+
+        // Simple animation for the rocket icon in the header
+        document.querySelector('.animate-bounce-slow').style.animation = 'bounce-slow 2s infinite ease-in-out';
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes bounce-slow {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-8px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
