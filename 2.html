@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xing Dev - Premium & Free Hosting</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Pixel Font (Press Start 2P) for a Minecraft/Retro feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define the Angkor Wat background and apply custom font */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap');
+
+        /* Default background styles (Angkor Wat image) */
+        #main-body {
+            /* Using a common Angkor Wat reference image */
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxPMngCvDbq21AvKJUy0bEm1s6Sekqdo8PlQ&s');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+            transition: background-color 0.5s ease, background-image 0.5s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Default font for readability */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            justify-content: flex-start;
+            align-items: center; 
+        }
+
+        /* Minecraft style border and background for main elements */
+        .minecraft-panel {
+            background-color: rgba(34, 34, 34, 0.95); /* Dark background with slight transparency */
+            border: 4px solid #4a4a4a; /* Dark border to mimic block edges */
+            box-shadow: 8px 8px 0px 0px #1a1a1a; /* Block shadow */
+            padding: 1.5rem;
+            border-radius: 4px;
+        }
+
+        /* Use Press Start 2P for titles and key text */
+        .pixel-text {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Block-style button */
+        .minecraft-btn {
+            background-color: #55aa55; /* Green block */
+            color: #ffffff;
+            border: 3px solid #3c8d3c; /* Darker green border */
+            box-shadow: 4px 4px 0px 0px #3c8d3c;
+            transition: all 0.05s ease;
+        }
+
+        .minecraft-btn:hover {
+            background-color: #66bb66;
+            box-shadow: 2px 2px 0px 0px #3c8d3c;
+            transform: translate(2px, 2px);
+        }
+
+        .minecraft-btn:active {
+            background-color: #3c8d3c;
+            box-shadow: 0px 0px 0px 0px #3c8d3c;
+            transform: translate(4px, 4px);
+        }
+
+        /* Input field style */
+        .minecraft-input {
+            background-color: #d1d1d1; /* Light gray stone/dirt */
+            border: 2px solid #5a5a5a;
+            box-shadow: inset 2px 2px 0px 0px #aaaaaa;
+            color: #1a1a1a;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .minecraft-input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        
+        /* Custom range slider style for Minecraft feel */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #55aa55;
+            border: 2px solid #3c8d3c;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #55aa55;
+            border: 2px solid #3c8d3c;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        /* Responsive Columns - Lg screens get 2-column layout, smaller screens stack */
+        @media (min-width: 1024px) {
+            .responsive-grid {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        /* CAROUSEL STYLING */
+        #banner-container::-webkit-scrollbar { display: none; }
+        #banner-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            cursor: grab;
+        }
+
+        .banner-item {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            height: 12rem; /* h-48 */
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="p-4" id="main-body">
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="fixed inset-0 flex flex-col items-center justify-center z-[9999] opacity-100 transition-opacity duration-500" style="background-color: rgba(26, 26, 26, 1);">
+        <div class="text-center">
+            <div class="pixel-text text-xl md:text-3xl text-green-400 mb-4 animate-pulse">Welcome to Xing Dev!</div>
+            <p class="text-sm text-gray-300 mb-6 font-inter">
+                *A friendly Cambodian spirit appears:* <span class="pixel-text text-yellow-400">"Sok Sabay, Traveler! We are gathering the digital blocks for you..."</span>
+            </p>
+            <div class="w-64 h-4 bg-gray-700 border-2 border-gray-500 rounded-sm overflow-hidden mx-auto">
+                <div id="loading-bar" class="h-full bg-green-500 transition-all duration-300 ease-linear" style="width: 0%;"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-4">Initializing Cambodian wisdom and server connections...</p>
+            
+            <button id="skipLoadingBtn" class="minecraft-btn p-2 text-sm pixel-text mt-6" 
+                    style="background-color: #94a3b8; border-color: #475569; box-shadow: 4px 4px 0px 0px #475569;">
+                Skip Loading
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Main Container centered on the Angkor Wat background -->
+    <div class="container mx-auto max-w-7xl py-4 lg:py-10 w-full">
+
+        <!-- Header Panel (GUI WINDOW STYLE) -->
+        <header class="minecraft-panel text-white mb-8 p-4 md:p-6 flex flex-col md:flex-row items-center justify-center md:space-x-6">
+            
+            <!-- GUI Element 1: Logo/Icon Block -->
+            <div class="p-3 bg-gray-600/70 border-4 border-gray-500 rounded-md mb-4 md:mb-0" style="box-shadow: inset 4px 4px 0px 0px #888; border-color: #787878;">
+                <img src="https://i.postimg.cc/Z5JZQH21/unnamed.jpg" alt="Xing Dev Logo" 
+                     class="w-[72px] h-[72px] rounded-sm"
+                     style="image-rendering: pixelated; border: 2px solid #fff; box-shadow: 2px 2px 0px 0px #3c3c3c;">
+            </div>
+            
+            <!-- GUI Element 2: Title Block/Label -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left p-3 bg-gray-600/70 border-4 border-gray-500 rounded-md w-full md:w-auto" style="box-shadow: inset 4px 4px 0px 0px #888; border-color: #787878;">
+                <h1 class="pixel-text text-3xl md:text-4xl text-yellow-400 mb-1 leading-none">Xing Dev Hosting</h1>
+                <p class="lg:text-lg text-gray-300 font-bold leading-tight">Cambodian Spirit Hosting GUI</p>
+            </div>
+        </header>
+
+
+        <!-- Banner Section -->
+        <section id="banner-carousel" class="minecraft-panel mb-8 p-0 border-4 border-gray-600 shadow-xl">
+            <div id="banner-container" class="flex overflow-x-scroll">
+                <!-- Banner 1: Minecraft Hosting -->
+                <img src="https://placehold.co/800x192/4CAF50/ffffff?text=Premium+Minecraft+Hosting" alt="Minecraft Hosting Banner" class="banner-item">
+                <!-- Banner 2: Telegram Bots -->
+                <img src="https://placehold.co/800x192/9333ea/ffffff?text=Reliable+Telegram+Bot+Hosting" alt="Telegram Bots Banner" class="banner-item">
+                <!-- Banner 3: $1 Per GB RAM -->
+                <img src="https://placehold.co/800x192/f59e0b/1a1a1a?text=%241+Per+GB+RAM+Pricing" alt="RAM Pricing Banner" class="banner-item">
+                <!-- Banner 4: Free Node/Python -->
+                <img src="https://placehold.co/800x192/00BCD4/ffffff?text=Free+2GB+Node.js+and+Python" alt="Free Hosting Banner" class="banner-item">
+            </div>
+        </section>
+
+
+        <!-- Main Content Grid -->
+        <div class="responsive-grid grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+
+            <!-- Services and Offerings (Left/Main Column - Wider on PC) -->
+            <section class="lg:col-span-2 space-y-8">
+                
+                <!-- Premium Hosting Overview Panel (ICONS UPDATED) -->
+                <div class="minecraft-panel text-white">
+                    <h2 class="pixel-text text-2xl text-red-400 mb-4">Premium Game & Bot Hosting</h2>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-yellow-800/80 rounded-md border-2 border-yellow-900 flex items-center">
+                            <!-- Minecraft Icon (Block) -->
+                            <svg class="w-8 h-8 mr-3 text-red-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor"/><path d="M7 7H17V10H7V7Z" fill="#1A1A1A"/><path d="M7 14H17V17H7V14Z" fill="#1A1A1A"/></svg>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Minecraft Server Hosting (New!)</h3>
+                                <p class="text-sm">Low-latency, high-performance servers designed for the best multiplayer experience. Start building your world today!</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-blue-800/80 rounded-md border-2 border-blue-900 flex items-center">
+                            <!-- Rocket Icon (Launch) -->
+                            <svg class="w-8 h-8 mr-3 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L10 6L14 6L12 2Z" fill="currentColor"/><rect x="8" y="6" width="8" height="12" rx="1" fill="currentColor"/><rect x="6" y="14" width="2" height="4" fill="currentColor"/><rect x="16" y="14" width="2" height="4" fill="currentColor"/><rect x="10" y="18" width="4" height="4" rx="1" fill="#FF7700"/></svg>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Premium Game Hosting</h3>
+                                <p class="text-sm">Host popular games with dedicated resources and DDoS protection for smooth gameplay.</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-purple-800/80 rounded-md border-2 border-purple-900 flex items-center">
+                            <!-- Robot Icon (Bot) -->
+                            <svg class="w-8 h-8 mr-3 text-cyan-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="6" width="12" height="12" rx="1" fill="currentColor"/><path d="M9 9H11V11H9V9Z" fill="#1A1A1A"/><path d="M13 9H15V11H13V9Z" fill="#1A1A1A"/><path d="M8 14H16V16H8V14Z" fill="#FF7700"/></svg>
+                            <div>
+                                <h3 class="font-bold text-xl mb-1">Telegram Bot Hosting</h3>
+                                <p class="text-sm">Reliable, always-on hosting for your Python and Node.js Telegram bots. Keep your community connected 24/7.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREMIUM HOSTING PLANS SECTION (ICONS UPDATED) -->
+                <div class="minecraft-panel text-white">
+                    <h2 class="pixel-text text-2xl text-red-400 mb-4">Premium RAM Pricing</h2>
+                    <p class="text-sm mb-6 text-gray-400">Our pricing model is simple: **$1 per GB of RAM, up to 1TB (1024GB).**</p>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Plan 1: Starter (Stone) - 4GB RAM @ $4/mo -->
+                        <div class="p-4 rounded-md border-4 border-gray-600 bg-gray-700/80 transition-all shadow-xl">
+                            <h3 class="pixel-text text-xl text-gray-300 mb-2">Stone Pickaxe</h3>
+                            <p class="text-2xl font-bold text-yellow-400 mb-3">4 GB<span class="text-base text-gray-300"> / $4 mo</span></p>
+                            <ul class="text-xs space-y-2">
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 8V4H16V8M8 12V20H16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    2 vCPU Cores
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="16" height="12" rx="1" fill="currentColor"/><path d="M6 8H18V10H6V8Z" fill="#1A1A1A"/><path d="M6 14H18V16H6V14Z" fill="#1A1A1A"/></svg>
+                                    20 GB NVMe Storage
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 6V12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12V6L12 2Z" fill="currentColor"/></svg>
+                                    Standard DDoS
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Plan 2: Pro (Iron) - 8GB RAM @ $8/mo -->
+                        <div class="p-4 rounded-md border-4 border-white bg-blue-700/80 transition-all shadow-xl">
+                            <h3 class="pixel-text text-xl text-white mb-2">Iron Sword (PRO)</h3>
+                            <p class="text-2xl font-bold text-yellow-400 mb-3">8 GB<span class="text-base text-gray-300"> / $8 mo</span></p>
+                            <ul class="text-xs space-y-2">
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 8V4H16V8M8 12V20H16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    4 vCPU Cores
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="16" height="14" rx="1" fill="currentColor"/><path d="M8 8H16V10H8V8Z" fill="#FF7700"/><path d="M8 12H16V14H8V12Z" fill="#CC5500"/></svg>
+                                    50 GB NVMe Storage
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 6V12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12V6L12 2Z" fill="currentColor"/></svg>
+                                    Enhanced DDoS
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Plan 3: Elite (Diamond) - 16GB RAM @ $16/mo -->
+                        <div class="p-4 rounded-md border-4 border-cyan-400 bg-cyan-900/80 transition-all shadow-xl">
+                            <h3 class="pixel-text text-xl text-cyan-400 mb-2">Diamond Armor (ELITE)</h3>
+                            <p class="text-2xl font-bold text-yellow-400 mb-3">16 GB<span class="text-base text-gray-300"> / $16 mo</span></p>
+                            <ul class="text-xs space-y-2">
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 8V4H16V8M8 12V20H16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    8 vCPU Cores
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="16" height="14" rx="1" fill="currentColor"/><path d="M8 8H16V10H8V8Z" fill="#FF7700"/><path d="M8 12H16V14H8V12Z" fill="#CC5500"/></svg>
+                                    100 GB NVMe Storage
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4 6V12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12V6L12 2Z" fill="currentColor"/></svg>
+                                    Ultimate DDoS
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PREMIUM HOSTING PLANS SECTION -->
+
+                <!-- CUSTOM PREMIUM ORDER LINE -->
+                <div class="minecraft-panel text-white border-yellow-500 shadow-yellow-900">
+                    <h2 class="pixel-text text-2xl text-yellow-400 mb-4">Custom Premium Order (1GB - 1TB)</h2>
+                    <p class="mb-4 text-sm">Select your desired RAM amount (1GB up to 1024GB) and submit your custom premium order request.</p>
+                    
+                    <form id="premiumRequestForm" class="space-y-4">
+                        
+                        <!-- RAM Input and Price Display -->
+                        <div class="bg-gray-800 p-4 rounded-md border-2 border-gray-700">
+                            <div class="flex justify-between items-center mb-2">
+                                <label for="ramAmount" class="block text-sm font-bold">Select RAM (GB):</label>
+                                <span id="ramDisplay" class="pixel-text text-xl text-green-400">4 GB</span>
+                            </div>
+                            
+                            <!-- Range Slider -->
+                            <input type="range" id="ramAmount" name="ramAmount" min="1" max="1024" value="4" step="1"
+                                class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                            
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-sm text-gray-400">1 GB Min</span>
+                                <span class="text-sm text-gray-400">1 TB Max</span>
+                            </div>
+                            
+                            <div class="mt-4 pt-3 border-t border-gray-700 flex justify-between items-center">
+                                <span class="text-base font-bold">Estimated Monthly Cost:</span>
+                                <span id="priceDisplay" class="pixel-text text-2xl text-red-400">$4</span>
+                            </div>
+                        </div>
+
+                        <!-- Name Input (required for premium) -->
+                        <div>
+                            <label for="premiumUserName" class="block mb-1 text-sm font-bold">Your Contact/Username:</label>
+                            <input type="text" id="premiumUserName" name="premiumUserName" required
+                                class="minecraft-input w-full p-2 text-base rounded-sm"
+                                placeholder="Telegram @YourName or Discord#1234">
+                        </div>
+                        
+                        <!-- Submission Button -->
+                        <button type="submit" id="premiumSubmitButton"
+                            class="minecraft-btn w-full p-2 text-lg pixel-text mt-4"
+                            style="background-color: #ff7700; border-color: #cc5500; box-shadow: 4px 4px 0px 0px #cc5500;">
+                            Place Premium Order 
+                        </button>
+                    </form>
+
+                    <!-- Message Box for Premium Feedback -->
+                    <div id="premiumMessageBox"
+                        class="mt-4 p-3 hidden rounded-sm text-sm border-2 font-bold transition-all">
+                        <!-- Messages will appear here -->
+                    </div>
+                </div>
+                <!-- END CUSTOM PREMIUM ORDER LINE -->
+                
+
+                <!-- Free Hosting Offer Panel (ICONS UPDATED & RESTRICTIONS ADDED) -->
+                <div class="minecraft-panel text-white border-green-500 shadow-green-900">
+                    <h2 class="pixel-text text-2xl text-green-400 mb-4">Free Hosting - 2GB Forever</h2>
+                    <p class="mb-4">Get permanent, complimentary hosting for your personal projects.</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm ml-4">
+                        <li class="flex items-center">
+                            <!-- Check Icon -->
+                            <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Supports Node.js and Python.
+                        </li>
+                        <li class="flex items-center">
+                            <!-- Check Icon -->
+                            <svg class="w-4 h-4 mr-2 text-green-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            2GB Storage/RAM allocation.
+                        </li>
+                        <!-- NEW RESTRICTIONS -->
+                        <li class="flex items-center">
+                            <!-- X-Mark Icon -->
+                            <svg class="w-4 h-4 mr-2 text-red-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="text-red-400 font-bold">NOT</span> for Minecraft or any game server hosting.
+                        </li>
+                        <li class="flex items-center">
+                            <!-- X-Mark Icon -->
+                            <svg class="w-4 h-4 mr-2 text-red-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="text-red-400 font-bold">NOT</span> for Lavalink or dedicated voice servers.
+                        </li>
+                        <li class="flex items-center">
+                            <!-- X-Mark Icon -->
+                            <svg class="w-4 h-4 mr-2 text-red-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="text-red-400 font-bold">NOT</span> for DDoS tools, mining, or abuse.
+                        </li>
+                    </ul>
+                    <p class="text-xs mt-4 text-gray-400">Limit one per user. Subject to fair usage policy.</p>
+                </div>
+            </section>
+
+            <!-- Free Hosting Request Form and Contact (Right Column - Narrower on PC) -->
+            <aside class="lg:col-span-1 space-y-8">
+                <!-- Free Hosting Request Form -->
+                <div class="minecraft-panel text-white">
+                    <h2 class="pixel-text text-xl mb-4 text-yellow-300">Request Free Hosting</h2>
+                    <form id="hostingRequestForm" class="space-y-4">
+
+                        <!-- Name Input -->
+                        <div>
+                            <label for="userName" class="block mb-1 text-sm font-bold">Your In-Game Name/Alias:</label>
+                            <input type="text" id="userName" name="userName" required
+                                class="minecraft-input w-full p-2 text-base rounded-sm"
+                                placeholder="XingDev-Fan-123">
+                        </div>
+
+                        <!-- Project Name Input -->
+                        <div>
+                            <label for="projectName" class="block mb-1 text-sm font-bold">Project Name/Bot Name:</label>
+                            <input type="text" id="projectName" name="projectName" required
+                                class="minecraft-input w-full p-2 text-base rounded-sm"
+                                placeholder="MyNodeBot">
+                        </div>
+
+                        <!-- Service Type Dropdown -->
+                        <div>
+                            <label for="serviceType" class="block mb-1 text-sm font-bold">Hosting Type:</label>
+                            <select id="serviceType" name="serviceType" required
+                                class="minecraft-input w-full p-2 text-base rounded-sm appearance-none">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="nodejs">Node.js Project</option>
+                                <option value="python">Python Bot/App</option>
+                            </select>
+                        </div>
+
+                        <!-- Submission Button -->
+                        <button type="submit" id="submitButton"
+                            class="minecraft-btn w-full p-2 text-lg pixel-text mt-4">
+                            Send Request
+                        </button>
+                    </form>
+
+                    <!-- Message Box for Feedback -->
+                    <div id="messageBox"
+                        class="mt-4 p-3 hidden rounded-sm text-sm border-2 font-bold transition-all">
+                        <!-- Messages will appear here -->
+                    </div>
+                </div>
+
+                <!-- NEW: THEME SETTINGS PANEL -->
+                <div class="minecraft-panel text-white">
+                    <h2 class="pixel-text text-xl mb-4 text-lime-400">Theme Settings</h2>
+                    <div>
+                        <label for="themeSelector" class="block mb-1 text-sm font-bold">Select Background:</label>
+                        <select id="themeSelector" 
+                            class="minecraft-input w-full p-2 text-base rounded-sm appearance-none">
+                            <option value="default">0. Default (Angkor Wat)</option>
+                            <option value="#709c3c">1. Grass Block</option>
+                            <option value="#8B5738">2. Dirt Block</option>
+                            <option value="#757575">3. Cobblestone</option>
+                            <option value="#74E7F9">4. Diamond Block</option>
+                            <option value="#1E49A4">5. Lapis Lazuli</option>
+                            <option value="#7D2121">6. Netherrack</option>
+                            <option value="#100A1A">7. Obsidian</option>
+                            <option value="#FEEE4B">8. Gold Block</option>
+                            <option value="#E8D397">9. Sandstone</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- END NEW: THEME SETTINGS PANEL -->
+
+                <!-- Contact Panel (ICONS UPDATED) -->
+                <div class="minecraft-panel text-white">
+                    <h2 class="pixel-text text-xl mb-4 text-cyan-300">Contact/Support</h2>
+                    <p class="text-sm">Need help or want to discuss premium options?</p>
+                    <p class="mt-3 text-sm flex items-center">
+                        <!-- Chat Icon -->
+                        <svg class="w-5 h-5 mr-2 text-blue-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="16" height="14" rx="2" fill="currentColor"/><path d="M12 18L9 22H15L12 18Z" fill="currentColor"/></svg>
+                        Join the Telegram Chat:
+                        <a href="https://t.me/xnhadev" target="_blank"
+                           class="text-blue-400 hover:text-blue-300 ml-2 underline">@xnhadev</a>
+                    </p>
+                    <p class="mt-2 text-sm flex items-center">
+                        <!-- Computer Icon -->
+                        <svg class="w-5 h-5 mr-2 text-cyan-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="14" rx="1" fill="currentColor"/><rect x="5" y="7" width="14" height="8" fill="#1A1A1A"/><rect x="8" y="18" width="8" height="2" rx="1" fill="currentColor"/></svg>
+                        Discord (Support will contact you after request).
+                    </p>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- JavaScript for Discord Webhook POST request and UI interactions, CAROUSEL, and THEME LOGIC -->
+    <script>
+        // The Discord Webhook URL provided by the user
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1433857246433120438/OyYd7xLgUZJFAf92llUtnnHVNOQjoshmAiGmkCehFmcKB8tbPLEgv4ITNvG4N83TWLBC';
+        
+        // --- Form Elements ---
+        const mainBody = document.getElementById('main-body');
+        const form = document.getElementById('hostingRequestForm');
+        const messageBox = document.getElementById('messageBox');
+        const submitButton = document.getElementById('submitButton');
+        const premiumForm = document.getElementById('premiumRequestForm');
+        const ramInput = document.getElementById('ramAmount');
+        const ramDisplay = document.getElementById('ramDisplay');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const premiumMessageBox = document.getElementById('premiumMessageBox');
+        const premiumSubmitButton = document.getElementById('premiumSubmitButton');
+        const themeSelector = document.getElementById('themeSelector'); 
+
+        // --- CAROUSEL ELEMENTS ---
+        const bannerContainer = document.getElementById('banner-container');
+        const bannerItems = document.querySelectorAll('.banner-item');
+        let currentIndex = 0;
+        const totalBanners = bannerItems.length;
+        const scrollInterval = 4000; 
+        let autoScrollTimer;
+
+        // --- LOADING SCREEN ELEMENTS ---
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingBar = document.getElementById('loading-bar');
+        const skipLoadingBtn = document.getElementById('skipLoadingBtn');
+        let loadingInterval; 
+
+        
+        // --- CAROUSEL FUNCTIONS ---
+        function autoAdvanceCarousel() {
+            if (totalBanners === 0) return;
+            currentIndex = (currentIndex + 1) % totalBanners;
+            const scrollDistance = currentIndex * bannerContainer.clientWidth;
+            
+            bannerContainer.scrollTo({
+                left: scrollDistance,
+                behavior: 'smooth'
+            });
+
+            if (currentIndex === totalBanners - 1) {
+                 setTimeout(() => {
+                    if (currentIndex === totalBanners - 1) {
+                         bannerContainer.scrollTo({
+                            left: 0,
+                            behavior: 'instant'
+                        });
+                        currentIndex = 0;
+                    }
+                }, 1000); 
+            }
+        }
+        
+        function startAutoScroll() {
+            stopAutoScroll(); 
+            autoScrollTimer = setInterval(autoAdvanceCarousel, scrollInterval);
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollTimer) {
+                clearInterval(autoScrollTimer);
+            }
+        }
+
+        // --- DRAG LOGIC ---
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        bannerContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            bannerContainer.style.cursor = 'grabbing';
+            startX = e.pageX - bannerContainer.offsetLeft;
+            scrollLeft = bannerContainer.scrollLeft;
+            stopAutoScroll(); 
+        });
+
+        bannerContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            bannerContainer.style.cursor = 'grab';
+            startAutoScroll();
+        });
+
+        bannerContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            bannerContainer.style.cursor = 'grab';
+            startAutoScroll();
+        });
+
+        bannerContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - bannerContainer.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            bannerContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch event handlers for mobile swiping
+        bannerContainer.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX - bannerContainer.offsetLeft;
+            scrollLeft = bannerContainer.scrollLeft;
+            stopAutoScroll(); 
+        });
+
+        bannerContainer.addEventListener('touchend', () => {
+            isDown = false;
+            startAutoScroll();
+        });
+
+        bannerContainer.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX - bannerContainer.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            bannerContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        // --- UTILITY FUNCTIONS ---
+        function showMessage(message, type, box) {
+            box.textContent = message;
+            box.className = 'mt-4 p-3 rounded-sm text-sm border-2 font-bold transition-all'; 
+            box.classList.remove('hidden');
+
+            if (type === 'success') {
+                box.classList.add('bg-green-600', 'border-green-700', 'text-white');
+            } else if (type === 'error') {
+                box.classList.add('bg-red-600', 'border-red-700', 'text-white');
+            } else {
+                box.classList.add('bg-blue-600', 'border-blue-700', 'text-white');
+            }
+        }
+
+        async function fetchWithRetry(fn, maxRetries = 3) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fn();
+                    if (response.ok) {
+                        return response;
+                    }
+                    if (response.status === 400 || response.status === 404 || response.status === 403) {
+                         throw new Error(`Non-retriable error: ${response.status} ${response.statusText}`);
+                    }
+                    throw new Error(`Request failed with status: ${response.status}`);
+                } catch (error) {
+                    if (i === maxRetries - 1) {
+                        throw error;
+                    }
+                    const delay = Math.pow(2, i) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        // --- THEME SWITCHER LOGIC ---
+        const ANGKOR_WAT_URL = "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxPMngCvDbq21AvKJUy0bEm1s6Sekqdo8PlQ&s')";
+
+        function applyTheme(selectedValue) {
+            if (selectedValue === 'default') {
+                // Apply the Angkor Wat background image
+                mainBody.style.backgroundImage = ANGKOR_WAT_URL;
+                mainBody.style.backgroundColor = ''; 
+            } else {
+                // Apply the solid color and remove the image
+                mainBody.style.backgroundColor = selectedValue;
+                mainBody.style.backgroundImage = 'none';
+            }
+        }
+
+        themeSelector.addEventListener('change', (e) => {
+            applyTheme(e.target.value);
+        });
+
+
+        // --- FORM SUBMISSION LOGIC ---
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            showMessage('Processing request...', 'info', messageBox);
+
+            const userName = document.getElementById('userName').value.trim();
+            const projectName = document.getElementById('projectName').value.trim();
+            const serviceType = document.getElementById('serviceType').value;
+            const timestamp = new Date().toISOString();
+
+            if (!userName || !projectName || !serviceType) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Request';
+                showMessage('Please fill out all fields.', 'error', messageBox);
+                return;
+            }
+
+            const payload = {
+                username: "Xing Dev Free Hosting Request",
+                embeds: [{
+                    title: `✨ New Free Hosting Request - ${serviceType.toUpperCase()}`,
+                    description: `A new user is requesting the 2GB free hosting service from the Xing Dev website.`,
+                    color: 3066993, // Green
+                    fields: [
+                        { name: "👤 Requester Name", value: `\`${userName}\``, inline: true },
+                        { name: "💻 Project Name", value: `\`${projectName}\``, inline: true },
+                        { name: "🛠 Service Type", value: `\`${serviceType.charAt(0).toUpperCase() + serviceType.slice(1)}\``, inline: true }
+                    ],
+                    footer: { text: `Request submitted at ${new Date().toLocaleTimeString()} (UTC)` },
+                    timestamp: timestamp
+                }]
+            };
+
+            try {
+                await fetchWithRetry(async () => {
+                    return fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                });
+
+                showMessage('✅ Request sent successfully! Check the Telegram link @xnhadev for confirmation. We will review your project soon.', 'success', messageBox);
+                form.reset();
+            } catch (error) {
+                console.error("Webhook Error:", error);
+                showMessage('❌ Failed to send request. Please try again or contact support via Telegram.', 'error', messageBox);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Request';
+            }
+        });
+
+        // Price calculation and display update
+        ramInput.addEventListener('input', () => {
+            const ram = ramInput.value;
+            const price = ram; // $1 per GB
+            ramDisplay.textContent = `${ram} GB`;
+            priceDisplay.textContent = `$${price}`;
+        });
+        
+        // Premium Form Submission
+        premiumForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            premiumSubmitButton.disabled = true;
+            premiumSubmitButton.textContent = 'PLACING ORDER...';
+            showMessage('Sending premium order request...', 'info', premiumMessageBox);
+
+            const userName = document.getElementById('premiumUserName').value.trim();
+            const ramAmount = ramInput.value;
+            const price = ramAmount;
+            const timestamp = new Date().toISOString();
+
+            if (!userName) {
+                premiumSubmitButton.disabled = false;
+                premiumSubmitButton.textContent = 'Place Premium Order';
+                showMessage('Please enter your contact username.', 'error', premiumMessageBox);
+                return;
+            }
+
+            const payload = {
+                username: "Xing Dev Premium Order System",
+                embeds: [{
+                    title: `💰 NEW PREMIUM ORDER - ${ramAmount} GB RAM`,
+                    description: `A user has placed a custom premium order. Please contact them via their provided username.`,
+                    color: 16744192, 
+                    fields: [
+                        { name: "👤 Requester Name", value: `\`${userName}\``, inline: true },
+                        { name: "🐏 RAM Requested", value: `\`${ramAmount} GB\``, inline: true },
+                        { name: "💲 Monthly Cost", value: `\`$${price}\``, inline: true }
+                    ],
+                    footer: { text: `Order submitted at ${new Date().toLocaleTimeString()} (UTC)` },
+                    timestamp: timestamp
+                }]
+            };
+
+            try {
+                await fetchWithRetry(async () => {
+                    return fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                });
+
+                showMessage('✅ Premium order request sent! Please wait for support to contact you on your specified username.', 'success', premiumMessageBox);
+            } catch (error) {
+                console.error("Premium Webhook Error:", error);
+                showMessage('❌ Failed to send premium request. Please try again or contact support via Telegram.', 'error', premiumMessageBox);
+            } finally {
+                premiumSubmitButton.disabled = false;
+                premiumSubmitButton.textContent = 'Place Premium Order';
+            }
+        });
+
+        // --- INITIALIZATION AND LOADING LOGIC ---
+        function pageReady() {
+            // Initialize premium slider price and start carousel
+            ramInput.dispatchEvent(new Event('input'));
+            startAutoScroll();
+            
+            // Disable skip button once loaded
+            skipLoadingBtn.disabled = true;
+
+            // 3. Fade out the Loading Screen
+            loadingScreen.classList.add('opacity-0');
+            
+            // Remove the screen after transition
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+
+        // Function to simulate loading progress
+        function startLoadingSimulation() {
+            let progress = 0;
+            loadingInterval = setInterval(() => {
+                progress += 20; 
+                loadingBar.style.width = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    // Call pageReady when loading simulation is complete
+                    setTimeout(pageReady, 500);
+                }
+            }, 200);
+        }
+
+        // Add event listener for the new skip button
+        skipLoadingBtn.addEventListener('click', () => {
+            if (loadingInterval) {
+                clearInterval(loadingInterval); // Stop the simulation
+            }
+            // Set bar to 100% instantly for visual feedback
+            loadingBar.style.width = '100%';
+            pageReady(); // Skip straight to page activation
+        });
+
+        // Start loading simulation as soon as the script runs
+        startLoadingSimulation();
+    </script>
+</body>
+</html>
